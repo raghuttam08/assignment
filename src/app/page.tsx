@@ -1,101 +1,111 @@
-import Image from "next/image";
+import React from 'react';
 
-export default function Home() {
+const HomePage = () => {
+  const categories = [
+    { title: 'Electronics', image: 'https://via.placeholder.com/150' },
+    { title: 'Fashion', image: 'https://via.placeholder.com/150' },
+    { title: 'Home Appliances', image: 'https://via.placeholder.com/150' },
+    { title: 'Books', image: 'https://via.placeholder.com/150' },
+  ];
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div>
+      {/* Navbar */}
+      <nav style={navbarStyles}>
+        <div style={logoStyles}>Amazon V2</div>
+        <input type="text" placeholder="Search products..." style={searchBarStyles} />
+        <button style={searchButtonStyles}>Search</button>
+      </nav>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      {/* Hero Section */}
+      <div style={heroStyles}>
+        <img
+          src="https://via.placeholder.com/1200x400"
+          alt="Hero Banner"
+          style={heroImageStyles}
+        />
+      </div>
+
+      {/* Featured Categories */}
+      <div style={categoriesContainerStyles}>
+        {categories.map((category, index) => (
+          <div key={index} style={categoryCardStyles}>
+            <img src={category.image} alt={category.title} style={categoryImageStyles} />
+            <h3>{category.title}</h3>
+          </div>
+        ))}
+      </div>
+
+      {/* Footer */}
+      <footer style={footerStyles}>
+        <p>© 2024 Amazon Clone. All rights reserved.</p>
       </footer>
     </div>
   );
-}
+};
+
+// Inline Styles
+const navbarStyles = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: '10px 20px',
+  backgroundColor: '#232f3e',
+  color: 'white',
+};
+
+const logoStyles = { fontSize: '1.5rem', fontWeight: 'bold' };
+
+const searchBarStyles = {
+  flex: 1,
+  margin: '0 10px',
+  padding: '8px',
+  borderRadius: '4px',
+  border: '1px solid #ccc',
+};
+
+const searchButtonStyles = {
+  backgroundColor: '#f0c14b',
+  border: '1px solid #a88734',
+  padding: '8px 16px',
+  borderRadius: '4px',
+  cursor: 'pointer',
+};
+
+const heroStyles = { textAlign: 'center', margin: '20px 0' };
+
+const heroImageStyles = {
+  width: '100%',
+  maxHeight: '400px',
+  objectFit: 'cover',
+};
+
+const categoriesContainerStyles = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+  gap: '20px',
+  padding: '20px',
+};
+
+const categoryCardStyles = {
+  textAlign: 'center',
+  border: '1px solid #ddd',
+  borderRadius: '8px',
+  padding: '10px',
+  transition: 'transform 0.2s ease',
+  cursor: 'pointer',
+};
+
+const categoryImageStyles = {
+  width: '100%',
+  borderRadius: '8px',
+};
+
+const footerStyles = {
+  textAlign: 'center',
+  padding: '10px',
+  backgroundColor: '#f3f3f3',
+  marginTop: '20px',
+};
+
+export default HomePage;
