@@ -26,6 +26,7 @@ Thumbs.db
 # Ignore build output
 /build/
 /dist/
+/.next/
 
 # Ignore IDE-specific files
 .vscode/
