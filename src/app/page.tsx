@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image'; // Import the Image component from Next.js
 
 const HomePage = () => {
   const categories = [
@@ -18,19 +19,19 @@ const HomePage = () => {
       </nav>
 
       {/* Hero Section */}
-      <div style={heroStyles}>
-        <img
-          src="https://via.placeholder.com/1200x400"
-          alt="Hero Banner"
-          style={heroImageStyles}
-        />
-      </div>
+      
 
       {/* Featured Categories */}
       <div style={categoriesContainerStyles}>
         {categories.map((category, index) => (
           <div key={index} style={categoryCardStyles}>
-            <img src={category.image} alt={category.title} style={categoryImageStyles} />
+            <Image
+              src={category.image}
+              alt={category.title}
+              width={150} // Set width for category image
+              height={150} // Set height for category image
+              style={categoryImageStyles}
+            />
             <h3>{category.title}</h3>
           </div>
         ))}
@@ -72,13 +73,8 @@ const searchButtonStyles = {
   cursor: 'pointer',
 };
 
-const heroStyles = { textAlign: 'center', margin: '20px 0' };
+// Removed heroStyles since it wasn't used
 
-const heroImageStyles = {
-  width: '100%',
-  maxHeight: '400px',
-  objectFit: 'cover',
-};
 
 const categoriesContainerStyles = {
   display: 'grid',
@@ -88,7 +84,7 @@ const categoriesContainerStyles = {
 };
 
 const categoryCardStyles = {
-  textAlign: 'center',
+  textAlign: 'center' as 'left' | 'center' | 'right',
   border: '1px solid #ddd',
   borderRadius: '8px',
   padding: '10px',
@@ -102,7 +98,7 @@ const categoryImageStyles = {
 };
 
 const footerStyles = {
-  textAlign: 'center',
+  textAlign: 'center' as 'left' | 'center' | 'right',
   padding: '10px',
   backgroundColor: '#f3f3f3',
   marginTop: '20px',
