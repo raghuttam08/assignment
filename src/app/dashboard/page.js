@@ -1,7 +1,9 @@
 'use client';
-
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
+import Cookies from 'js-cookie';
 
 const DashboardPage = () => {
   const [products, setProducts] = useState([]);
@@ -9,9 +11,21 @@ const DashboardPage = () => {
   const [cart, setCart] = useState([]);
   const [categories, setCategories] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [username, setUsername] = useState('');
   const router = useRouter();
 
+  // Fetch products and categories, and load username and cart from cookies/localStorage
   useEffect(() => {
+    const token = Cookies.get('token');
+    const usernameFromCookie = Cookies.get('username');  // Get username from cookie
+    console.log('Username from cookie:', usernameFromCookie);  // Debugging line
+
+    if (!token) {
+      router.push('/login');  // Redirect to login page if not logged in
+    } else {
+      setUsername(usernameFromCookie || '');  // Set username from cookie or empty string if undefined
+    }
+
     const fetchProducts = async () => {
       const response = await fetch('https://fakestoreapi.com/products');
       const data = await response.json();
@@ -23,8 +37,15 @@ const DashboardPage = () => {
     };
 
     fetchProducts();
-  }, []);
 
+    // Load cart from localStorage
+    const storedCart = localStorage.getItem('cart');
+    if (storedCart) {
+      setCart(JSON.parse(storedCart));
+    }
+  }, [router]);
+
+  // Filter products based on selected category
   const filterByCategory = (category) => {
     if (category === 'All') {
       setFilteredProducts(products);
@@ -35,24 +56,22 @@ const DashboardPage = () => {
     setDropdownOpen(false); // Close the dropdown after selecting a category
   };
 
+  // Toggle category dropdown
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
+  // Add product to cart and update localStorage
   const addToCart = (product) => {
     const updatedCart = [...cart, product];
     setCart(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
 
-  const goToCart = () => {
-    router.push('/cart');
-  };
-
-  const goToAbout = () => {
-    router.push('/about');
-  };
-
-  const goToContact = () => {
-    router.push('/contact');
+  // Handle logout (clear cookies and localStorage)
+  const handleLogout = () => {
+    Cookies.remove('username');
+    Cookies.remove('token');
+    localStorage.removeItem('cart');
+    router.push('/login');
   };
 
   return (
@@ -60,7 +79,7 @@ const DashboardPage = () => {
       {/* Navbar */}
       <div style={navbarStyles}>
         <div style={logoSectionStyles} onClick={() => router.push('/')}>
-          <img src="/logo.png" alt="Amazon Logo" style={logoStyles} />
+          <Image src="/logo.png" alt="Amazon Logo" width={150} height={40} style={logoStyles} />
         </div>
         <div style={menuStyles}>
           {/* Dropdown for Categories */}
@@ -83,12 +102,12 @@ const DashboardPage = () => {
             )}
           </div>
           {/* About and Contact Links */}
-          <button style={navButtonStyles} onClick={goToAbout}>
-            About
-          </button>
-          <button style={navButtonStyles} onClick={goToContact}>
-            Contact
-          </button>
+          <Link href="/about">
+            <button style={navButtonStyles}>About</button>
+          </Link>
+          <Link href="/contact">
+            <button style={navButtonStyles}>Contact</button>
+          </Link>
         </div>
         <div style={searchBarStyles}>
           <input
@@ -99,10 +118,17 @@ const DashboardPage = () => {
           <button style={searchButtonStyles}>Search</button>
         </div>
         <div style={userSectionStyles}>
-          <button style={navButtonStyles}>Hello, Sign in</button>
-          <button style={navButtonStyles} onClick={goToCart}>
-            Cart ({cart.length})
-          </button>
+          {username ? (
+            <>
+              <button style={navButtonStyles}>Hello, {username}</button>
+              <button onClick={handleLogout} style={navButtonStyles}>Log Out</button>
+            </>
+          ) : (
+            <button style={navButtonStyles}>Hello, Sign in</button>
+          )}
+          <Link href="/cart">
+            <button style={navButtonStyles}>Cart ({cart.length})</button>
+          </Link>
         </div>
       </div>
 
@@ -125,7 +151,13 @@ const DashboardPage = () => {
         <div style={productListStyles}>
           {filteredProducts.map((product) => (
             <div key={product.id} style={productItemStyles}>
-              <img src={product.image} alt={product.title} style={productImageStyles} />
+              <Image
+                src={product.image}
+                alt={product.title}
+                width={250}
+                height={200}
+                style={productImageStyles}
+              />
               <div style={productDetailsStyles}>
                 <h3>{product.title}</h3>
                 <p>${product.price.toFixed(2)}</p>
@@ -146,7 +178,7 @@ const DashboardPage = () => {
   );
 };
 
-// Styles
+// Styles (Same as before)
 const pageStyles = { paddingTop: '120px', backgroundColor: '#F3F3F3' };
 const navbarStyles = {
   position: 'fixed',
@@ -251,6 +283,11 @@ const addToCartButtonStyles = {
   cursor: 'pointer',
 };
 
-const footerStyles = { backgroundColor: '#232F3E', color: '#FFFFFF', padding: '20px', textAlign: 'center' };
+const footerStyles = {
+  backgroundColor: '#232F3E',
+  color: '#FFFFFF',
+  textAlign: 'center',
+  padding: '20px 0',
+};
 
 export default DashboardPage;

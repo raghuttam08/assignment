@@ -1,8 +1,9 @@
 'use client';
-
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import '../../../styles/globals.css';
+import Image from 'next/image';
+import Cookies from 'js-cookie';
 
 const LoginPage = () => {
   const [userID, setUserID] = useState<string>('');
@@ -22,8 +23,7 @@ const LoginPage = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Successful login, store the JWT token
-        localStorage.setItem('token', data.token); // Store JWT token in localStorage
+        // Successful login, cookies are set by the backend
         console.log('Login successful:', data);
 
         // Redirect to dashboard
@@ -42,7 +42,7 @@ const LoginPage = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-white-200 via-teal-300 to-teal-400 py-12 px-6 sm:px-8">
       <div className="max-w-md w-full bg-white p-8 rounded-xl shadow-xl space-y-8">
         <div className="flex justify-center mb-6">
-          <img src="/az.png" alt="Login logo" width={256} height={100} />
+          <Image src="/az.png" alt="Login logo" width={256} height={100} />
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm space-y-4">

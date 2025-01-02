@@ -8,18 +8,19 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('token')?.value;
 
   if (!token) {
-    return NextResponse.redirect(new URL('/login', request.url)); // Redirect to login if no token
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
   try {
-    jwt.verify(token, JWT_SECRET); // Validate JWT
-  } catch {
-    return NextResponse.redirect(new URL('/login', request.url)); // Redirect on invalid token
+    jwt.verify(token, JWT_SECRET);
+  } catch (error) {
+    console.error('Invalid or expired token:', error);
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  return NextResponse.next(); // Allow access if token is valid
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*'], // Protect dashboard routes
+  matcher: ['/dashboard/:path*'],
 };

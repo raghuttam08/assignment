@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image'
 
 const CartPage = () => {
   const [cart, setCart] = useState([]);
@@ -43,7 +44,7 @@ const CartPage = () => {
           {cart.length > 0 ? (
             cart.map((item) => (
               <div key={item.id} style={styles.cartItem}>
-                <img src={item.image} alt={item.title} style={styles.cartItemImage} />
+                <Image src={item.image} alt={item.title} style={styles.cartItemImage} />
                 <div style={styles.cartItemDetails}>
                   <h2>{item.title}</h2>
                   <p>Price: ${item.price}</p>

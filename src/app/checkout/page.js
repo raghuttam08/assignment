@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
-
+ 
 const CheckoutPage = () => {
   const initialOptions = {
     "client-id": "ARJj_zXhkrI-dtEVkFqKAaz0SVmr8BdcXfv-TGCE5NooD-oP8bjMDB0S5I3D9DfrIVB71lRrrsznCXGZ",
@@ -46,7 +46,7 @@ const CheckoutPage = () => {
               });
             }}
             onApprove={(data, actions) => {
-              return actions.order.capture().then((details) => {
+              return actions.order.capture().then(( ) => {
                 handleApprove(data.orderID);
               });
             }}
